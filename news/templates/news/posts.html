@@ -1,0 +1,41 @@
+<!--  наследуемся от шаблона base.html -->
+{% extends 'layout/default.html' %}
+
+<!-- не забываем заранее загружать наши фильтры! -->
+{% load custom_filters %}
+
+<!-- Название у нас будет Новости, статьи -->
+{% block title %}
+    Новости, статьи
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим все посты -->
+{% block content %}
+    <h1 align="center" >Все новости и статьи:</h1>
+    <h5 align="right">{{ time_now| date:'d-M-Y H:i' }}</h5>
+    <hr>
+    <p> (Всего новостей и статей: {{ posts|length }})</p>
+
+    {% if posts %}
+        <table class="table">
+            <tr>
+                <th scope="col"> Название</th>
+                <th scope="col"><p align="justify"> Дата публикации</p></th>
+                <th scope="col">Содержимое</th>
+            </tr>
+            {% for post in posts %}
+                <tr>
+                    <td>{{ post.title|truncatewords:8|truncatechars:50|Censor }}</td>
+                    <td>{{ post.dateCreation| date:'d-M-Y H:i' }}</td>
+                    <td>{{ post.text|truncatechars:50|Censor }}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
+    {% else %}
+        <h2>Новостей и статей нет!</h2>
+
+    {% endif %}
+
+{% endblock content %}
